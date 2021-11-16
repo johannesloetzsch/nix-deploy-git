@@ -27,13 +27,16 @@ with lib; {
     services.openssh.enable = true;
   
     users.users."${cfg.user}" = {
+      group = "${cfg.user}";
       isSystemUser = true;
       createHome = true;
       home = "/var/lib/${cfg.user}";
       shell = "${pkgs.git}/bin/git-shell";
       openssh.authorizedKeys.keys = cfg.keys;
     };
-  
+
+    users.groups."${cfg.user}" = {};
+
     systemd = {
       services."nix-deploy-git-setup" = {
         wantedBy = [ "multi-user.target" ];
